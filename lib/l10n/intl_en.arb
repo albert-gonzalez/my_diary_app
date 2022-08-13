@@ -1,0 +1,15 @@
+{
+    "myDiary": "My Diary",
+    "entry": "Entry",
+    "entries": "Entries",
+    "newEntry": "New Entry",
+    "editEntry": "Edit Entry",
+    "entryRemoved": "Entry removed",
+    "entrySaved": "Entry saved",
+    "undo": "Undo",
+    "emptyDay": "This day is empty. Write something!",
+    "title": "Title",
+    "date": "Date",
+    "body": "Body",
+    "emptyFieldError": "This field can't be empty"
+}
