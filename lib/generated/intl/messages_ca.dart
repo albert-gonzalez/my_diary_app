@@ -35,7 +35,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "entryRemoved":
             MessageLookupByLibrary.simpleMessage("Entrada esborrada"),
         "entrySaved": MessageLookupByLibrary.simpleMessage("Entrada desada"),
-        "logout": MessageLookupByLibrary.simpleMessage("Tanca la sesión"),
+        "logout": MessageLookupByLibrary.simpleMessage("Tanca la sessió"),
         "myDiary": MessageLookupByLibrary.simpleMessage("El meu Diari"),
         "newEntry": MessageLookupByLibrary.simpleMessage("Nova Entrada"),
         "signInAnonymously":

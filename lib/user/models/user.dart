@@ -20,8 +20,8 @@ class User with ChangeNotifier {
     });
   }
 
-  get isLogged => isAnonymous || id != null;
-  get id => signInAccount?.id;
+  get isLogged => isAnonymous || id != '';
+  get id => signInAccount?.id ?? '';
   get email => signInAccount?.email ?? '';
   get serverAuthCode => signInAccount?.serverAuthCode;
 

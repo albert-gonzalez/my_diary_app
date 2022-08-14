@@ -6,6 +6,8 @@ import 'package:my_diary/entry/services/entry_repository.dart';
 import 'package:flutter_quill/flutter_quill.dart' hide Text;
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:intl/intl.dart';
+import 'package:my_diary/user/models/user.dart';
+import 'package:provider/provider.dart';
 import 'package:uuid/uuid.dart';
 
 import '../../generated/l10n.dart';
@@ -83,6 +85,8 @@ class EntryPageState extends State<EntryPage> {
 
   @override
   Widget build(BuildContext context) {
+    User user = context.read();
+
     if (_bodyController == null) {
       return Scaffold(
         appBar: AppBar(),
@@ -112,7 +116,7 @@ class EntryPageState extends State<EntryPage> {
       }
 
       var entry = Entry(_id!, _titleController.text,
-          _bodyController!.document.toDelta().toJson(), _day!);
+          _bodyController!.document.toDelta().toJson(), _day!, user.id);
       await _entryRepository.persist(entry);
 
       if (widget.callback != null) {

@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:google_sign_in/google_sign_in.dart';
 import 'package:my_diary/user/components/avatar.dart';
 import 'package:my_diary/user/models/user.dart';
 import 'package:provider/provider.dart';
 import 'package:my_diary/generated/l10n.dart';
 
 class ProfilePage extends StatelessWidget {
+  const ProfilePage({Key? key}) : super(key: key);
 
   logout(User user, BuildContext context) {
     Scaffold.of(context).closeDrawer();

@@ -1,10 +1,8 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
-import 'package:google_sign_in/google_sign_in.dart';
 import 'package:my_diary/components/calendar/calendar.dart';
 import 'package:my_diary/entry/pages/entry_page.dart';
-import 'package:my_diary/entry/pages/sign_in_page.dart';
 import 'package:my_diary/entry/services/entry_repository.dart';
 import 'package:my_diary/user/components/avatar.dart';
 import 'package:my_diary/user/models/user.dart';
@@ -36,7 +34,7 @@ class ListPageState extends State<ListPage> {
   }
 
   Future<void> loadEntries() async {
-    var entries = await _entryRepository.findByDay(_selectedDay);
+    var entries = await _entryRepository.findByDay(context.read<User>().id, _selectedDay);
 
     setState(() {
       _entries = entries;
@@ -54,7 +52,7 @@ class ListPageState extends State<ListPage> {
   }
 
   void reloadWithChange(Entry entry) async {
-    var entries = await _entryRepository.findByDay(entry.day);
+    var entries = await _entryRepository.findByDay(entry.userId, entry.day);
     setState(() {
       _selectedDay = entry.day;
       _focusedDay = entry.day;
@@ -161,9 +159,9 @@ class ListPageState extends State<ListPage> {
     ];
   }
 
-  selectDay(selectedDay, focusedDay) async {
+  selectDay(String userId, selectedDay, focusedDay) async {
       var entries =
-      await _entryRepository.findByDay(selectedDay);
+      await _entryRepository.findByDay(userId, selectedDay);
       setState(() {
         _selectedDay = selectedDay;
         _focusedDay = focusedDay;
@@ -190,7 +188,7 @@ class ListPageState extends State<ListPage> {
     if (!user.isLogged) {
       Future.microtask(() => Navigator.pushReplacementNamed(context, '/'));
 
-      return Scaffold();
+      return const Scaffold();
     }
 
     return Scaffold(
@@ -200,7 +198,7 @@ class ListPageState extends State<ListPage> {
           leading: Builder(
             builder: (BuildContext context) {
               return IconButton(
-                  onPressed: () => Scaffold.of(context).openDrawer(), icon: Avatar());
+                  onPressed: () => Scaffold.of(context).openDrawer(), icon: const Avatar());
             }),
         ),
         drawer: ProfilePage(),
@@ -219,7 +217,7 @@ class ListPageState extends State<ListPage> {
                         selectedDayPredicate: (day) {
                           return isSameDay(_selectedDay, day);
                         },
-                        onDaySelected: selectDay,
+                        onDaySelected: (selectedDay, focusedDay) => selectDay(user.id, selectedDay, focusedDay),
                         onPageChanged: setMonthFocusedDay,
                       )),
                   ...buildEntryList()
