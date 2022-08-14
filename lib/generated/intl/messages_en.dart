@@ -22,6 +22,7 @@ class MessageLookup extends MessageLookupByLibrary {
 
   final messages = _notInlinedMessages(_notInlinedMessages);
   static Map<String, Function> _notInlinedMessages(_) => <String, Function>{
+        "anonymous": MessageLookupByLibrary.simpleMessage("Anonymous"),
         "body": MessageLookupByLibrary.simpleMessage("Body"),
         "date": MessageLookupByLibrary.simpleMessage("Date"),
         "editEntry": MessageLookupByLibrary.simpleMessage("Edit Entry"),
@@ -33,8 +34,13 @@ class MessageLookup extends MessageLookupByLibrary {
         "entry": MessageLookupByLibrary.simpleMessage("Entry"),
         "entryRemoved": MessageLookupByLibrary.simpleMessage("Entry removed"),
         "entrySaved": MessageLookupByLibrary.simpleMessage("Entry saved"),
+        "logout": MessageLookupByLibrary.simpleMessage("Logout"),
         "myDiary": MessageLookupByLibrary.simpleMessage("My Diary"),
         "newEntry": MessageLookupByLibrary.simpleMessage("New Entry"),
+        "signInAnonymously":
+            MessageLookupByLibrary.simpleMessage("Sign in anonymously"),
+        "signInWithGoogle":
+            MessageLookupByLibrary.simpleMessage("Sign in with Google"),
         "title": MessageLookupByLibrary.simpleMessage("Title"),
         "undo": MessageLookupByLibrary.simpleMessage("Undo")
       };

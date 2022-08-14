@@ -11,5 +11,10 @@
     "title": "Títol",
     "date": "Data",
     "body": "Cos",
-    "emptyFieldError": "Aquest camp no pot estar buit"
+    "emptyFieldError": "Aquest camp no pot estar buit",
+    "anonymous": "Anònim",
+    "signInWithGoogle": "Identifica't amb Google",
+    "signInAnonymously": "Entra com anònim",
+    "logout": "Tanca la sesión"
+
 }

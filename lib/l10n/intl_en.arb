@@ -11,5 +11,9 @@
     "title": "Title",
     "date": "Date",
     "body": "Body",
-    "emptyFieldError": "This field can't be empty"
+    "emptyFieldError": "This field can't be empty",
+    "anonymous": "Anonymous",
+    "signInWithGoogle": "Sign in with Google",
+    "signInAnonymously": "Sign in anonymously",
+    "logout": "Logout"
 }

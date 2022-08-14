@@ -1,6 +1,6 @@
 {
-    "name": "fluttertest",
-    "short_name": "fluttertest",
+    "name": "My Diary",
+    "short_name": "My Diary",
     "start_url": ".",
     "display": "standalone",
     "background_color": "#0175C2",

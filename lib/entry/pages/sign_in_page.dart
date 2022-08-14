@@ -1,41 +1,29 @@
 import 'package:flutter/material.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:http/http.dart' as http;
+import 'package:my_diary/generated/l10n.dart';
 import 'dart:convert' show json;
 
-class SignInDemo extends StatefulWidget {
-  const SignInDemo({Key? key}) : super(key: key);
+import 'package:my_diary/user/models/user.dart';
+import 'package:provider/provider.dart';
+
+class SignInPage extends StatefulWidget {
+  const SignInPage({Key? key}) : super(key: key);
 
   @override
-  State createState() => SignInDemoState();
+  State createState() => SignInPageState();
 }
 
-GoogleSignIn _googleSignIn = GoogleSignIn(
-  // Optional clientId
-  //clientId: '269277862154-mfut8kfb42cda3htp2ethhpjs92snqnk.apps.googleusercontent.com',
-  scopes: <String>[
-    'email',
-    'https://www.googleapis.com/auth/contacts.readonly',
-  ],
-);
-
-
-class SignInDemoState extends State<SignInDemo> {
+class SignInPageState extends State<SignInPage> {
   GoogleSignInAccount? _currentUser;
   String _contactText = '';
 
   @override
   void initState() {
     super.initState();
-    _googleSignIn.onCurrentUserChanged.listen((GoogleSignInAccount? account) {
-      setState(() {
-        _currentUser = account;
-      });
-      if (_currentUser != null) {
-        _handleGetContact(_currentUser!);
-      }
-    });
-    _googleSignIn.signInSilently();
+
+    User user = context.read();
+    user.signInSilentlyWithGoogle();
   }
 
   Future<void> _handleGetContact(GoogleSignInAccount user) async {
@@ -85,58 +73,49 @@ class SignInDemoState extends State<SignInDemo> {
     return null;
   }
 
-  Future<void> _handleSignIn() async {
-    try {
-      await _googleSignIn.signIn();
-    } catch (error) {
-      print(error);
-    }
+  Future<void> _signInWithGoogle(User user) async {
+      await user.signInWithGoogle();
   }
 
-  Future<void> _handleSignOut() => _googleSignIn.disconnect();
+  void _signInAnonymously(User user, BuildContext context) {
+      user.signInAsAnonymous(context);
+  }
 
   Widget _buildBody() {
-    final GoogleSignInAccount? user = _currentUser;
-    if (user != null) {
+    final User user = context.watch<User>();
+
+    if (user.isLogged) {
+      Future.microtask(() => Navigator.of(context).pushReplacementNamed('/entry/list'));
       return Column(
         mainAxisAlignment: MainAxisAlignment.spaceAround,
-        children: <Widget>[
-          ListTile(
-            leading: GoogleUserCircleAvatar(
-              identity: user,
-            ),
-            title: Text(user.displayName ?? ''),
-            subtitle: Text(user.email),
-          ),
-          const Text('Signed in successfully.'),
-          Text(_contactText),
-          ElevatedButton(
-            onPressed: _handleSignOut,
-            child: const Text('SIGN OUT'),
-          ),
-          ElevatedButton(
-            child: const Text('REFRESH'),
-            onPressed: () => _handleGetContact(user),
-          ),
-        ],
+        children: [],
       );
     } else {
-      return Column(
-        mainAxisAlignment: MainAxisAlignment.spaceAround,
+      return Center(child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        crossAxisAlignment: CrossAxisAlignment.center,
         children: <Widget>[
-          const Text('You are not currently signed in.'),
-          ElevatedButton(
-            onPressed: _handleSignIn,
-            child: const Text('SIGN IN'),
+          Icon(Icons.menu_book, size: 64, color: Theme.of(context).primaryColor),
+          ElevatedButton.icon(
+            onPressed: () => _signInWithGoogle(user),
+            icon: Image.asset('assets/google_icon.png', width: 28,),
+            label: Text(S.of(context).signInWithGoogle, style: TextStyle(color: Colors.black)),
+            style: ElevatedButton.styleFrom(primary: Colors.white, fixedSize: Size.fromWidth(220)),
           ),
+          ElevatedButton.icon(
+            onPressed: () => _signInAnonymously(user, context),
+            icon: Icon(Icons.person, color: Colors.black),
+            label: Text(S.of(context).signInAnonymously, style: TextStyle(color: Colors.black),),
+            style: ElevatedButton.styleFrom(primary: Colors.white, fixedSize: Size.fromWidth(220)),
+          )
         ],
-      );
+      ));
     }
   }
 
   @override
   Widget build(BuildContext context) {
-    return
-         _buildBody();
+    return Scaffold(body: _buildBody());
+
   }
 }

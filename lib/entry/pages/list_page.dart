@@ -1,9 +1,15 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 import 'package:my_diary/components/calendar/calendar.dart';
 import 'package:my_diary/entry/pages/entry_page.dart';
+import 'package:my_diary/entry/pages/sign_in_page.dart';
 import 'package:my_diary/entry/services/entry_repository.dart';
+import 'package:my_diary/user/components/avatar.dart';
+import 'package:my_diary/user/models/user.dart';
+import 'package:my_diary/user/pages/profile_page.dart';
+import 'package:provider/provider.dart';
 import 'package:table_calendar/table_calendar.dart';
 import '../../generated/l10n.dart';
 import '../models/entry.dart';
@@ -25,6 +31,7 @@ class ListPageState extends State<ListPage> {
   @override
   void initState() {
     super.initState();
+
     loadEntries();
   }
 
@@ -178,11 +185,25 @@ class ListPageState extends State<ListPage> {
 
   @override
   Widget build(BuildContext context) {
+    User user = context.watch();
+
+    if (!user.isLogged) {
+      Future.microtask(() => Navigator.pushReplacementNamed(context, '/'));
+
+      return Scaffold();
+    }
+
     return Scaffold(
         appBar: AppBar(
           title: Text(S.of(context).myDiary),
-          leading: const Icon(Icons.menu_book),
+          //leading: const Icon(Icons.menu_book),
+          leading: Builder(
+            builder: (BuildContext context) {
+              return IconButton(
+                  onPressed: () => Scaffold.of(context).openDrawer(), icon: Avatar());
+            }),
         ),
+        drawer: ProfilePage(),
         body: Padding(
             padding: const EdgeInsets.all(10),
             child: Column(
