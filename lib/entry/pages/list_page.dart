@@ -122,7 +122,12 @@ class ListPageState extends State<ListPage> {
           flex: 1,
           child: ListView(
             children: _entries
-                .map((entry) => Card(
+                .map((entry) => Dismissible(key: Key(entry.id),
+                direction: DismissDirection.startToEnd,
+                onDismissed: (direction) {
+                  removeEntry(entry);
+                },
+                child: Card(
                     elevation: 10,
                     margin: const EdgeInsets.fromLTRB(0, 0, 0, 20),
                     child: ListTile(
@@ -153,7 +158,7 @@ class ListPageState extends State<ListPage> {
                                 Icons.delete,
                                 color: Theme.of(context).errorColor,
                               )),
-                        ]))))
+                        ])))))
                 .toList(),
           ))
     ];
