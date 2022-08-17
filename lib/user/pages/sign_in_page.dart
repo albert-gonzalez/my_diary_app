@@ -125,7 +125,7 @@ class SignInPageState extends State<SignInPage> {
 
     if (user.isLogged) {
       Future.microtask(
-          () => Navigator.of(context).pushReplacementNamed(Routes.entry));
+          () => Navigator.of(context).pushReplacementNamed(Routes.entryList));
     }
 
     return Center(
