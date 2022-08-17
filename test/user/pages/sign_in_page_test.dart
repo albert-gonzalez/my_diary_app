@@ -33,7 +33,7 @@ void main() {
   ));
 
     await tester.pumpWidget(widget);
-    await tester.pumpAndSettle();;
+    await tester.pumpAndSettle();
   }
 
   expectThatButtonsDisappear() {

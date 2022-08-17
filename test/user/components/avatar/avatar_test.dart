@@ -7,6 +7,7 @@ import 'package:my_diary/user/models/user.dart';
 import 'package:provider/provider.dart';
 
 const _key = Key('avatar');
+const _googleKey = Key('google');
 
 void main() {
   createWidget({logged = false}) => ChangeNotifierProvider(
@@ -20,7 +21,7 @@ void main() {
             Future.microtask(
                 () => context.read<User>().signInAsAnonymous(context));
           }
-          return const Avatar(key: _key);
+          return const Avatar(key: _key, googleAvatarWidget: Placeholder(key: _googleKey),);
         }),
       ));
 
