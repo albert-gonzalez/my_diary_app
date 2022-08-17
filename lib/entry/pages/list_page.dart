@@ -4,7 +4,8 @@ import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:my_diary/components/calendar/calendar.dart';
 import 'package:my_diary/entry/pages/entry_page.dart';
 import 'package:my_diary/entry/services/entry_repository.dart';
-import 'package:my_diary/user/components/avatar.dart';
+import 'package:my_diary/routes.dart';
+import 'package:my_diary/user/components/avatar/avatar.dart';
 import 'package:my_diary/user/models/user.dart';
 import 'package:my_diary/user/pages/profile_page.dart';
 import 'package:provider/provider.dart';
@@ -191,7 +192,7 @@ class ListPageState extends State<ListPage> {
     User user = context.watch();
 
     if (!user.isLogged) {
-      Future.microtask(() => Navigator.pushReplacementNamed(context, '/'));
+      Future.microtask(() => Navigator.pushReplacementNamed(context, Routes.home));
 
       return const Scaffold();
     }

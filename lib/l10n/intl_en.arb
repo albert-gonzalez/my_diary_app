@@ -15,5 +15,6 @@
     "anonymous": "Anonymous",
     "signInWithGoogle": "Sign in with Google",
     "signInAnonymously": "Sign in anonymously",
-    "logout": "Logout"
+    "logout": "Logout",
+    "errorOccurred": "An error occurred. Please try again"
 }

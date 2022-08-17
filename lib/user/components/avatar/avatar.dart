@@ -10,7 +10,7 @@ class Avatar extends StatelessWidget {
   Widget build(BuildContext context) {
     User user = context.watch();
 
-    return user.isAnonymous
+    return user.isAnonymous || !user.isLogged
         ? LayoutBuilder(builder: (BuildContext context, BoxConstraints constraints) => Icon(Icons.person_sharp, size: constraints.maxWidth / 1.1))
         : GoogleUserCircleAvatar(
             identity: user.signInAccount!,

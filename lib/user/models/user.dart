@@ -3,18 +3,22 @@ import 'package:google_sign_in/google_sign_in.dart';
 import 'package:my_diary/generated/l10n.dart';
 
 class User with ChangeNotifier {
-  GoogleSignInAccount? signInAccount;
+  GoogleIdentity? signInAccount;
   bool isAnonymous = false;
   String displayName = '';
 
-  final GoogleSignIn _googleSignIn = GoogleSignIn(
+  GoogleSignIn _googleSignIn = GoogleSignIn(
     // Optional clientId
     scopes: <String>[
       'email',
     ],
   );
 
-  User() {
+  User({ googleSignIn }) {
+    if (googleSignIn != null) {
+      _googleSignIn = googleSignIn;
+    }
+    
     _googleSignIn.onCurrentUserChanged.listen((GoogleSignInAccount? account) {
       updateFromGoogleSignIn(account);
     });
@@ -29,7 +33,7 @@ class User with ChangeNotifier {
     return _googleSignIn.signIn();
   }
 
-  Future<GoogleSignInAccount?> signInSilentlyWithGoogle() {
+  Future<GoogleIdentity?> signInSilentlyWithGoogle() {
     return _googleSignIn.signInSilently();
   }
 
@@ -37,7 +41,7 @@ class User with ChangeNotifier {
     updateFromAnonymousSignIn(context);
   }
 
-  void updateFromGoogleSignIn(GoogleSignInAccount? account) {
+  void updateFromGoogleSignIn(GoogleIdentity? account) {
     signInAccount = account;
     isAnonymous = false;
     displayName = signInAccount?.displayName ?? '';
@@ -58,6 +62,7 @@ class User with ChangeNotifier {
 
     signInAccount = null;
     isAnonymous = false;
+    displayName = '';
     notifyListeners();
   }
 }

@@ -2,7 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:my_diary/entry/pages/entry_page.dart';
 import 'package:my_diary/entry/pages/list_page.dart';
-import 'package:my_diary/entry/pages/sign_in_page.dart';
+import 'package:my_diary/routes.dart';
+import 'package:my_diary/user/pages/sign_in_page.dart';
 import 'package:my_diary/user/models/user.dart';
 import 'package:provider/provider.dart';
 import 'generated/l10n.dart';
@@ -36,8 +37,8 @@ class MyApp extends StatelessWidget {
       ],
       supportedLocales: S.delegate.supportedLocales,
       routes: {
-        '/entry/list': (context) => const ListPage(),
-        '/entry': (context) => const EntryPage(),
+        Routes.entryList: (context) => const ListPage(),
+        Routes.entry: (context) => const EntryPage(),
       },
     );
   }

@@ -34,6 +34,8 @@ class MessageLookup extends MessageLookupByLibrary {
         "entry": MessageLookupByLibrary.simpleMessage("Entry"),
         "entryRemoved": MessageLookupByLibrary.simpleMessage("Entry removed"),
         "entrySaved": MessageLookupByLibrary.simpleMessage("Entry saved"),
+        "errorOccurred": MessageLookupByLibrary.simpleMessage(
+            "An error occurred. Please try again"),
         "logout": MessageLookupByLibrary.simpleMessage("Logout"),
         "myDiary": MessageLookupByLibrary.simpleMessage("My Diary"),
         "newEntry": MessageLookupByLibrary.simpleMessage("New Entry"),

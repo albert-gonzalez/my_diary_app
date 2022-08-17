@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:my_diary/user/components/avatar.dart';
+import 'package:my_diary/user/components/avatar/avatar.dart';
 import 'package:my_diary/user/models/user.dart';
 import 'package:provider/provider.dart';
 import 'package:my_diary/generated/l10n.dart';

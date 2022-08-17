@@ -15,5 +15,6 @@
     "anonymous": "Anónimo",
     "signInWithGoogle": "Identifícate con Google",
     "signInAnonymously": "Entra como anónimo",
-    "logout": "Cerrar la sesión"
+    "logout": "Cerrar la sesión",
+    "errorOccurred": "Ha ocurrido un error. Por favor, prueba de nuevo"
 }
