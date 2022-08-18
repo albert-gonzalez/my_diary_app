@@ -19,31 +19,49 @@ void main() {
   createWidget(WidgetTester tester, {EntryRepository? repository}) async {
     if (repository == null) {
       repository = InMemoryEntryRepository();
-      await repository.persist(Entry('id', 'title', [{ 'insert': 'test\n' }], DateTime.now(), ''));
-      await repository.persist(Entry('id2', 'title2', [{'insert': 'test\n' }], DateTime.now(), ''));
+      await repository.persist(Entry(
+          'id',
+          'title',
+          [
+            {'insert': 'test\n'}
+          ],
+          DateTime.now(),
+          ''));
+      await repository.persist(Entry(
+          'id2',
+          'title2',
+          [
+            {'insert': 'test\n'}
+          ],
+          DateTime.now(),
+          ''));
     }
-
 
     final signIn = MockGoogleSignIn();
 
-    when(signIn.onCurrentUserChanged).thenAnswer((
-        realInvocation) => Stream.empty());
+    when(signIn.onCurrentUserChanged)
+        .thenAnswer((realInvocation) => Stream.empty());
 
     final user = User(googleSignIn: signIn);
     final widget = ChangeNotifierProvider(
-        create: (context) => user, child: MaterialApp(
-      localizationsDelegates: const [
-        S.delegate,
-        GlobalMaterialLocalizations.delegate,
-        GlobalWidgetsLocalizations.delegate,
-      ],
-      supportedLocales: S.delegate.supportedLocales,
-      home: Builder(builder: (context) {
-        user.signInAsAnonymous(context);
+        create: (context) => user,
+        child: MaterialApp(
+          localizationsDelegates: const [
+            S.delegate,
+            GlobalMaterialLocalizations.delegate,
+            GlobalWidgetsLocalizations.delegate,
+          ],
+          supportedLocales: S.delegate.supportedLocales,
+          home: Builder(builder: (context) {
+            user.signInAsAnonymous(context);
 
-        return Scaffold(body: ListPage(key: _key, entryRepository: repository,));
-      }),
-    ));
+            return Scaffold(
+                body: ListPage(
+              key: _key,
+              entryRepository: repository,
+            ));
+          }),
+        ));
 
     await tester.pumpWidget(widget);
     await tester.pumpAndSettle();
@@ -52,7 +70,9 @@ void main() {
   }
 
   group('List page', () {
-    testWidgets('renders a calendar and the empty day text if there is no data in the selected day', (tester) async {
+    testWidgets(
+        'renders a calendar and the empty day text if there is no data in the selected day',
+        (tester) async {
       await createWidget(tester, repository: InMemoryEntryRepository());
 
       expect(find.byKey(_key), findsOneWidget);
@@ -60,7 +80,9 @@ void main() {
       expect(find.byKey(emptyDayTextKey), findsOneWidget);
     });
 
-    testWidgets('renders a list of entries where there is data in the selected day', (tester) async {
+    testWidgets(
+        'renders a list of entries where there is data in the selected day',
+        (tester) async {
       await createWidget(tester);
 
       expect(find.byKey(_key), findsOneWidget);
@@ -70,7 +92,9 @@ void main() {
       expect(find.text('title2'), findsOneWidget);
     });
 
-    testWidgets('renders a list of entries where there is data in the selected day', (tester) async {
+    testWidgets(
+        'renders a list of entries where there is data in the selected day',
+        (tester) async {
       await createWidget(tester);
 
       expect(find.byKey(_key), findsOneWidget);
@@ -104,7 +128,8 @@ void main() {
       expect(find.text('title'), findsOneWidget);
     });
 
-    testWidgets('edit button opens the entry page in edit mode', (tester) async {
+    testWidgets('edit button opens the entry page in edit mode',
+        (tester) async {
       await createWidget(tester);
 
       await tester.tap(find.byKey(editButtonKey).first);

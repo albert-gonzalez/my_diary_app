@@ -21,7 +21,7 @@ class InMemoryEntryRepository extends EntryRepository {
     var entries = await findByDay(entry.userId, entry.day);
     try {
       var storedEntry =
-      entries.firstWhere((storedEntry) => entry.id == storedEntry.id);
+          entries.firstWhere((storedEntry) => entry.id == storedEntry.id);
       storedEntry.title = entry.title;
       storedEntry.body = entry.body;
     } catch (e) {
@@ -39,5 +39,4 @@ class InMemoryEntryRepository extends EntryRepository {
 
     _storage[storageKeyFromEntry(entry)] = jsonEncode(entries);
   }
-
 }

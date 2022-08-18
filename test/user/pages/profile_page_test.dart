@@ -13,30 +13,36 @@ import 'sign_in_page_test.mocks.dart';
 const _key = Key('page');
 
 void main() {
-  createWidget(WidgetTester tester, { Function? signInCallback, Stream<GoogleSignInAccount>? userStream = const Stream.empty() }) async {
+  createWidget(WidgetTester tester,
+      {Function? signInCallback,
+      Stream<GoogleSignInAccount>? userStream = const Stream.empty()}) async {
     final signIn = MockGoogleSignIn();
 
-    when(signIn.onCurrentUserChanged).thenAnswer((
-        realInvocation) => userStream!);
+    when(signIn.onCurrentUserChanged)
+        .thenAnswer((realInvocation) => userStream!);
 
-    when(signIn.disconnect()).thenAnswer((
-        realInvocation) => Future.value());
+    when(signIn.disconnect()).thenAnswer((realInvocation) => Future.value());
 
     final user = User(googleSignIn: signIn);
     final widget = ChangeNotifierProvider(
-        create: (context) => user, child: MaterialApp(
-      localizationsDelegates: const [
-        S.delegate,
-      ],
-      supportedLocales: S.delegate.supportedLocales,
-      home: Builder(builder: (context) {
-        if (signInCallback != null) {
-          signInCallback(user, context);
-        }
+        create: (context) => user,
+        child: MaterialApp(
+          localizationsDelegates: const [
+            S.delegate,
+          ],
+          supportedLocales: S.delegate.supportedLocales,
+          home: Builder(builder: (context) {
+            if (signInCallback != null) {
+              signInCallback(user, context);
+            }
 
-        return const Scaffold(body: ProfilePage(key: _key, avatar: Avatar(googleAvatarWidget: Placeholder()),));
-      }),
-    ));
+            return const Scaffold(
+                body: ProfilePage(
+              key: _key,
+              avatar: Avatar(googleAvatarWidget: Placeholder()),
+            ));
+          }),
+        ));
 
     await tester.pumpWidget(widget);
     await tester.pumpAndSettle();
@@ -54,9 +60,10 @@ void main() {
   }
 
   group('Profile Page', () {
-    testWidgets('shows anonymous info if is logged as anonymous', (tester) async {
-
-      signInCallback(User user, BuildContext context) => user.signInAsAnonymous(context);
+    testWidgets('shows anonymous info if is logged as anonymous',
+        (tester) async {
+      signInCallback(User user, BuildContext context) =>
+          user.signInAsAnonymous(context);
       final user = await createWidget(tester, signInCallback: signInCallback);
       expect(find.byKey(_key), findsOneWidget);
       expect(find.text(user.displayName), findsOneWidget);
@@ -64,8 +71,8 @@ void main() {
       expect(find.byType(Avatar), findsOneWidget);
     });
 
-    testWidgets('shows google account info if is logged with google', (tester) async {
-
+    testWidgets('shows google account info if is logged with google',
+        (tester) async {
       final user = await createWidgetSignedInWithGoogle(tester);
 
       expect(find.byKey(_key), findsOneWidget);
@@ -75,7 +82,8 @@ void main() {
     });
 
     testWidgets('can logout an anonymous user', (tester) async {
-      signInCallback(User user, BuildContext context) => user.signInAsAnonymous(context);
+      signInCallback(User user, BuildContext context) =>
+          user.signInAsAnonymous(context);
       final user = await createWidget(tester, signInCallback: signInCallback);
       await tester.tap(find.byKey(logoutButtonKey));
       expect(user.isLogged, false);

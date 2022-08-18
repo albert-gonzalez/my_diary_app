@@ -24,5 +24,9 @@ class Calendar extends TableCalendar {
       super.onPageChanged,
       super.headerStyle,
       super.calendarStyle})
-      : super(key: key, firstDay: _defaultFirstDay, lastDay: _defaultLastDay, );
+      : super(
+          key: key,
+          firstDay: _defaultFirstDay,
+          lastDay: _defaultLastDay,
+        );
 }

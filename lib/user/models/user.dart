@@ -14,11 +14,11 @@ class User with ChangeNotifier {
     ],
   );
 
-  User({ googleSignIn }) {
+  User({googleSignIn}) {
     if (googleSignIn != null) {
       _googleSignIn = googleSignIn;
     }
-    
+
     _googleSignIn.onCurrentUserChanged.listen((GoogleSignInAccount? account) {
       updateFromGoogleSignIn(account);
     });

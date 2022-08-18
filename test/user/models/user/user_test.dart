@@ -19,25 +19,24 @@ class _MockedGoogleIdentity implements GoogleIdentity {
 
   @override
   String? get serverAuthCode => 'code';
-
 }
 
 void main() {
   final user = User();
 
   createWidget({Function? userAction}) => MaterialApp(
-    localizationsDelegates: const [
-      S.delegate,
-    ],
-    supportedLocales: S.delegate.supportedLocales,
-    locale: const Locale('en'),
-    home: Builder(builder: (context) {
-      if (userAction != null) {
-        userAction(context);
-      }
-      return const Placeholder();
-    }),
-  );
+        localizationsDelegates: const [
+          S.delegate,
+        ],
+        supportedLocales: S.delegate.supportedLocales,
+        locale: const Locale('en'),
+        home: Builder(builder: (context) {
+          if (userAction != null) {
+            userAction(context);
+          }
+          return const Placeholder();
+        }),
+      );
 
   group('User', () {
     User? user;
@@ -55,7 +54,8 @@ void main() {
     });
 
     testWidgets('can sign in as anonymous', (tester) async {
-      await tester.pumpWidget(createWidget(userAction: (context) => user!.signInAsAnonymous(context)));
+      await tester.pumpWidget(createWidget(
+          userAction: (context) => user!.signInAsAnonymous(context)));
       await tester.pump();
 
       expect(user!.id, '');

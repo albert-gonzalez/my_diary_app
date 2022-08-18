@@ -13,24 +13,30 @@ import 'package:google_sign_in/google_sign_in.dart';
 import 'sign_in_page_test.mocks.dart';
 
 @GenerateMocks([GoogleSignIn, GoogleSignInAccount])
-
 const _key = Key('page');
 const _fakeListPageKey = Key('route');
 
 void main() {
-  createWidget(GoogleSignIn signIn, WidgetTester tester, { Stream<GoogleSignInAccount>? userStream = const Stream.empty() }) async {
-    when(signIn.onCurrentUserChanged).thenAnswer((realInvocation) => userStream!);
-    when(signIn.signInSilently()).thenAnswer((realInvocation) => Future.value());
+  createWidget(GoogleSignIn signIn, WidgetTester tester,
+      {Stream<GoogleSignInAccount>? userStream = const Stream.empty()}) async {
+    when(signIn.onCurrentUserChanged)
+        .thenAnswer((realInvocation) => userStream!);
+    when(signIn.signInSilently())
+        .thenAnswer((realInvocation) => Future.value());
 
     final widget = ChangeNotifierProvider(
-      create: (context) => User(googleSignIn: signIn), child: MaterialApp(
-    localizationsDelegates: const [
-      S.delegate,
-    ],
-    supportedLocales: S.delegate.supportedLocales,
-    home: const SignInPage(key: _key),
-      routes: {Routes.entryList: (context) => const Placeholder(key: _fakeListPageKey)},
-  ));
+        create: (context) => User(googleSignIn: signIn),
+        child: MaterialApp(
+          localizationsDelegates: const [
+            S.delegate,
+          ],
+          supportedLocales: S.delegate.supportedLocales,
+          home: const SignInPage(key: _key),
+          routes: {
+            Routes.entryList: (context) =>
+                const Placeholder(key: _fakeListPageKey)
+          },
+        ));
 
     await tester.pumpWidget(widget);
     await tester.pumpAndSettle();
@@ -57,12 +63,13 @@ void main() {
       expectThanButtonsAppear();
     });
 
-    testWidgets('signs in anonymously and redirects to list page', (tester) async {
+    testWidgets('signs in anonymously and redirects to list page',
+        (tester) async {
       await createWidget(MockGoogleSignIn(), tester);
 
       await tester.tap(find.byKey(anonymousSignInButtonKey));
       await tester.pump();
-      
+
       expectThatButtonsDisappear();
 
       await tester.pumpAndSettle();
@@ -70,14 +77,16 @@ void main() {
       expect(find.byKey(_fakeListPageKey), findsOneWidget);
     });
 
-    testWidgets('signs in with google and redirects to list page', (tester) async {
+    testWidgets('signs in with google and redirects to list page',
+        (tester) async {
       final signIn = MockGoogleSignIn();
       final mockAccount = MockGoogleSignInAccount();
       final userSignedIn = Completer<GoogleSignInAccount>();
-      Stream<GoogleSignInAccount> userStream = Stream.fromFuture(userSignedIn.future);
+      Stream<GoogleSignInAccount> userStream =
+          Stream.fromFuture(userSignedIn.future);
       when(signIn.signIn()).thenAnswer((realInvocation) => Future(() {
-        userSignedIn.complete(Future.value(mockAccount));
-      }));
+            userSignedIn.complete(Future.value(mockAccount));
+          }));
 
       when(mockAccount.id).thenReturn('someId');
       when(mockAccount.displayName).thenReturn('someName');
@@ -95,9 +104,11 @@ void main() {
       expect(find.byKey(_fakeListPageKey), findsOneWidget);
     });
 
-    testWidgets('restores the button when sign in with google fails', (tester) async {
+    testWidgets('restores the button when sign in with google fails',
+        (tester) async {
       final signIn = MockGoogleSignIn();
-      when(signIn.signIn()).thenAnswer((realInvocation) => Future.delayed(const Duration(milliseconds: 1), () => throw 'Some error'));
+      when(signIn.signIn()).thenAnswer((realInvocation) => Future.delayed(
+          const Duration(milliseconds: 1), () => throw 'Some error'));
 
       await createWidget(signIn, tester);
 

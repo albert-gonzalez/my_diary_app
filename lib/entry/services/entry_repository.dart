@@ -9,15 +9,15 @@ class EntryRepository {
 
   String storageKeyFromEntry(Entry entry) =>
       storageKey(userId: entry.userId, day: entry.day);
-  
-  String storageKey({ required String userId, required DateTime day}) =>
+
+  String storageKey({required String userId, required DateTime day}) =>
       "${entriesPrefix}_${userId}_${day.year}_${day.month}_${day.day}";
 
   EntryRepository();
 
   Future<List<Entry>> findByDay(String userId, DateTime day) async {
-    var rawEntries = await storage.read(
-        key: storageKey(userId: userId, day: day));
+    var rawEntries =
+        await storage.read(key: storageKey(userId: userId, day: day));
     return Entry.listFromJson(rawEntries != null ? jsonDecode(rawEntries) : []);
   }
 

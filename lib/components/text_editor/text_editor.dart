@@ -3,11 +3,13 @@ import 'package:flutter_quill/flutter_quill.dart';
 
 class TextEditor extends QuillEditor {
   TextEditor(
-      {Key? key, required super.controller,
+      {Key? key,
+      required super.controller,
       required super.focusNode,
       required super.readOnly,
-      super.showCursor })
-      : super(key: key,
+      super.showCursor})
+      : super(
+            key: key,
             scrollable: true,
             scrollController: ScrollController(),
             autoFocus: false,

@@ -11,7 +11,8 @@ const _googleKey = Key('google');
 
 void main() {
   createWidget({logged = false}) => ChangeNotifierProvider(
-      create: (context) => User(), child: MaterialApp(
+      create: (context) => User(),
+      child: MaterialApp(
         localizationsDelegates: const [
           S.delegate,
         ],
@@ -21,7 +22,10 @@ void main() {
             Future.microtask(
                 () => context.read<User>().signInAsAnonymous(context));
           }
-          return const Avatar(key: _key, googleAvatarWidget: Placeholder(key: _googleKey),);
+          return const Avatar(
+            key: _key,
+            googleAvatarWidget: Placeholder(key: _googleKey),
+          );
         }),
       ));
 
