@@ -58,7 +58,8 @@ class ListPageState extends State<ListPage> {
             callback: reloadWithChange,
             entry: entry,
             readOnly: readOnly,
-            day: _selectedDay));
+            day: _selectedDay,
+            entryRepository: widget.entryRepository,));
   }
 
   void reloadWithChange(Entry entry) async {

@@ -3,7 +3,7 @@ import 'dart:convert';
 import 'package:my_diary/entry/models/entry.dart';
 import 'package:my_diary/entry/services/entry_repository.dart';
 
-class InMemoryEntryRepository extends EntryRepository {
+class InMemoryEntryRepository implements EntryRepository {
   final Map<String, dynamic> _storage = {};
 
   InMemoryEntryRepository({Map<String, dynamic> data = const {}}) {
@@ -12,7 +12,7 @@ class InMemoryEntryRepository extends EntryRepository {
 
   @override
   Future<List<Entry>> findByDay(String userId, DateTime day) async {
-    var rawEntries = _storage[storageKey(userId: userId, day: day)];
+    var rawEntries = _storage[EntryRepository.storageKey(userId: userId, day: day)];
     return Entry.listFromJson(rawEntries != null ? jsonDecode(rawEntries) : []);
   }
 
@@ -28,7 +28,7 @@ class InMemoryEntryRepository extends EntryRepository {
       entries.add(entry);
     }
 
-    _storage[storageKeyFromEntry(entry)] = jsonEncode(entries);
+    _storage[EntryRepository.storageKeyFromEntry(entry)] = jsonEncode(entries);
   }
 
   @override
@@ -37,6 +37,6 @@ class InMemoryEntryRepository extends EntryRepository {
 
     entries.removeWhere((storedEntry) => storedEntry.id == entry.id);
 
-    _storage[storageKeyFromEntry(entry)] = jsonEncode(entries);
+    _storage[EntryRepository.storageKeyFromEntry(entry)] = jsonEncode(entries);
   }
 }

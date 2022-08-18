@@ -29,7 +29,7 @@ class User with ChangeNotifier {
   get email => signInAccount?.email ?? '';
   get serverAuthCode => signInAccount?.serverAuthCode;
 
-  Future<void> signInWithGoogle() {
+  Future<GoogleIdentity?> signInWithGoogle() {
     return _googleSignIn.signIn();
   }
 

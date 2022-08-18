@@ -5,18 +5,16 @@ import 'package:my_diary/entry/models/entry.dart';
 const entriesBox = 'entries';
 
 class EntryRepository {
-  final Box storage = Hive.box(entriesBox);
+  final Box _box = Hive.box(entriesBox);
 
-  String storageKeyFromEntry(Entry entry) =>
+  static String storageKeyFromEntry(Entry entry) =>
       storageKey(userId: entry.userId, day: entry.day);
 
-  String storageKey({required String userId, required DateTime day}) =>
+  static String storageKey({required String userId, required DateTime day}) =>
       "${userId}_${day.year}_${day.month}_${day.day}";
 
-  EntryRepository();
-
   Future<List<Entry>> findByDay(String userId, DateTime day) async {
-    var rawEntries = storage.get(storageKey(userId: userId, day: day));
+    var rawEntries = _box.get(storageKey(userId: userId, day: day));
     return Entry.listFromJson(rawEntries != null ? jsonDecode(rawEntries) : []);
   }
 
@@ -25,7 +23,7 @@ class EntryRepository {
 
     entries.removeWhere((storedEntry) => storedEntry.id == entry.id);
 
-    storage.put(storageKeyFromEntry(entry), jsonEncode(entries));
+    _box.put(storageKeyFromEntry(entry), jsonEncode(entries));
   }
 
   Future<void> persist(Entry entry) async {
@@ -39,6 +37,6 @@ class EntryRepository {
       entries.add(entry);
     }
 
-    storage.put(storageKeyFromEntry(entry), jsonEncode(entries));
+    _box.put(storageKeyFromEntry(entry), jsonEncode(entries));
   }
 }

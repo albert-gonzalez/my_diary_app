@@ -16,9 +16,10 @@ class EntryPage extends StatefulWidget {
   final Entry? entry;
   final bool readOnly;
   final DateTime? day;
+  final EntryRepository? entryRepository;
 
   const EntryPage(
-      {Key? key, this.callback, this.entry, this.readOnly = false, this.day})
+      {Key? key, this.callback, this.entry, this.readOnly = false, this.day, this.entryRepository})
       : super(key: key);
 
   @override
@@ -32,7 +33,7 @@ class EntryPageState extends State<EntryPage> {
   final _dayController = TextEditingController();
   QuillController? _bodyController;
   final FocusNode _focusNode = FocusNode();
-  final _entryRepository = EntryRepository();
+  late final _entryRepository = widget.entryRepository ?? EntryRepository();
   final uuid = const Uuid();
   bool readOnly = false;
   String? _id;

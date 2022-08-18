@@ -89,11 +89,12 @@ class SignInPageState extends State<SignInPage> {
       isErrorState = false;
     });
     try {
-      await user.signInSilentlyWithGoogle();
+      final signIn = await user.signInSilentlyWithGoogle();
+      if (signIn == null) {
+        setState(() => isSigningIn = false);
+      }
     } catch (e) {
-      setState(() => isErrorState = true);
-    } finally {
-      setState(() => isSigningIn = false);
+      setState(() {isErrorState = true; isSigningIn = false;});
     }
   }
 
@@ -104,11 +105,12 @@ class SignInPageState extends State<SignInPage> {
     });
 
     try {
-      await user.signInWithGoogle();
+      final signIn = await user.signInWithGoogle();
+      if (signIn == null) {
+        setState(() => isSigningIn = false);
+      }
     } catch (e) {
-      setState(() => isErrorState = true);
-    } finally {
-      setState(() => isSigningIn = false);
+      setState(() {isErrorState = true; isSigningIn = false;});
     }
   }
 
