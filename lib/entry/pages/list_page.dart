@@ -13,8 +13,16 @@ import 'package:table_calendar/table_calendar.dart';
 import '../../generated/l10n.dart';
 import '../models/entry.dart';
 
+const emptyDayTextKey = Key('emptyDatyText');
+const removeButtonKey = Key('removeButton');
+const undoButtonKey = Key('undoButton');
+const editButtonKey = Key('editButton');
+const addButtonKey = Key('addButton');
+
 class ListPage extends StatefulWidget {
-  const ListPage({Key? key}) : super(key: key);
+  final EntryRepository? entryRepository;
+
+  const ListPage({Key? key, this.entryRepository}) : super(key: key);
 
   @override
   ListPageState createState() => ListPageState();
@@ -25,7 +33,8 @@ class ListPageState extends State<ListPage> {
   var _focusedDay = DateTime.now();
   var _selectedDay = DateTime.now();
 
-  final _entryRepository = EntryRepository(const FlutterSecureStorage());
+  late final EntryRepository _entryRepository =
+      widget.entryRepository ?? EntryRepository();
 
   @override
   void initState() {
@@ -35,7 +44,8 @@ class ListPageState extends State<ListPage> {
   }
 
   Future<void> loadEntries() async {
-    var entries = await _entryRepository.findByDay(context.read<User>().id, _selectedDay);
+    var entries =
+        await _entryRepository.findByDay(context.read<User>().id, _selectedDay);
 
     setState(() {
       _entries = entries;
@@ -73,6 +83,7 @@ class ListPageState extends State<ListPage> {
       shape: const RoundedRectangleBorder(
           borderRadius: BorderRadius.all(Radius.circular(5))),
       action: SnackBarAction(
+          key: undoButtonKey,
           label: S.of(context).undo,
           onPressed: () {
             setState(() {
@@ -104,6 +115,7 @@ class ListPageState extends State<ListPage> {
                         color: Theme.of(context).textTheme.headline4!.color)),
                 Flexible(
                     child: Text(
+                  key: emptyDayTextKey,
                   S.of(context).emptyDay,
                   style: Theme.of(context).textTheme.headline4,
                   textAlign: TextAlign.center,
@@ -123,63 +135,65 @@ class ListPageState extends State<ListPage> {
           flex: 1,
           child: ListView(
             children: _entries
-                .map((entry) => Dismissible(key: Key(entry.id),
-                direction: DismissDirection.startToEnd,
-                onDismissed: (direction) {
-                  removeEntry(entry);
-                },
-                child: Card(
-                    elevation: 10,
-                    margin: const EdgeInsets.fromLTRB(0, 0, 0, 20),
-                    child: ListTile(
-                        onTap: () =>
-                            openEntryModal(entry: entry, readOnly: true),
-                        title: Padding(
-                          padding: const EdgeInsets.all(20),
-                          child: Text(entry.title,
-                              style: const TextStyle(
-                                fontWeight: FontWeight.bold,
-                                fontSize: 16,
-                              )),
-                        ),
-                        trailing:
-                            Row(mainAxisSize: MainAxisSize.min, children: [
-                          IconButton(
-                              onPressed: () async {
-                                openEntryModal(entry: entry);
-                              },
-                              icon: const Icon(
-                                Icons.edit,
-                              )),
-                          IconButton(
-                              onPressed: () {
-                                removeEntry(entry);
-                              },
-                              icon: Icon(
-                                Icons.delete,
-                                color: Theme.of(context).errorColor,
-                              )),
-                        ])))))
+                .map((entry) => Dismissible(
+                    key: Key(entry.id),
+                    direction: DismissDirection.startToEnd,
+                    onDismissed: (direction) {
+                      removeEntry(entry);
+                    },
+                    child: Card(
+                        elevation: 10,
+                        margin: const EdgeInsets.fromLTRB(0, 0, 0, 20),
+                        child: ListTile(
+                            onTap: () =>
+                                openEntryModal(entry: entry, readOnly: true),
+                            title: Padding(
+                              padding: const EdgeInsets.all(20),
+                              child: Text(entry.title,
+                                  style: const TextStyle(
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: 16,
+                                  )),
+                            ),
+                            trailing:
+                                Row(mainAxisSize: MainAxisSize.min, children: [
+                              IconButton(
+                                  key: editButtonKey,
+                                  onPressed: () async {
+                                    openEntryModal(entry: entry);
+                                  },
+                                  icon: const Icon(
+                                    Icons.edit,
+                                  )),
+                              IconButton(
+                                  key: removeButtonKey,
+                                  onPressed: () {
+                                    removeEntry(entry);
+                                  },
+                                  icon: Icon(
+                                    Icons.delete,
+                                    color: Theme.of(context).errorColor,
+                                  )),
+                            ])))))
                 .toList(),
           ))
     ];
   }
 
   selectDay(String userId, selectedDay, focusedDay) async {
-      var entries =
-      await _entryRepository.findByDay(userId, selectedDay);
-      setState(() {
-        _selectedDay = selectedDay;
-        _focusedDay = focusedDay;
-        _entries = entries;
-      });
+    var entries = await _entryRepository.findByDay(userId, selectedDay);
+    setState(() {
+      _selectedDay = selectedDay;
+      _focusedDay = focusedDay;
+      _entries = entries;
+    });
 
-      if (!mounted) {
-        return;
-      }
-
-      ScaffoldMessenger.of(context).hideCurrentSnackBar();
+    if (!mounted) {
+      return;
     }
+
+    ScaffoldMessenger.of(context).hideCurrentSnackBar();
+  }
 
   setMonthFocusedDay(focusedDay) {
     setState(() {
@@ -192,7 +206,8 @@ class ListPageState extends State<ListPage> {
     User user = context.watch();
 
     if (!user.isLogged) {
-      Future.microtask(() => Navigator.pushReplacementNamed(context, Routes.home));
+      Future.microtask(
+          () => Navigator.pushReplacementNamed(context, Routes.home));
 
       return const Scaffold();
     }
@@ -201,11 +216,11 @@ class ListPageState extends State<ListPage> {
         appBar: AppBar(
           title: Text(S.of(context).myDiary),
           //leading: const Icon(Icons.menu_book),
-          leading: Builder(
-            builder: (BuildContext context) {
-              return IconButton(
-                  onPressed: () => Scaffold.of(context).openDrawer(), icon: const Avatar());
-            }),
+          leading: Builder(builder: (BuildContext context) {
+            return IconButton(
+                onPressed: () => Scaffold.of(context).openDrawer(),
+                icon: const Avatar());
+          }),
         ),
         drawer: ProfilePage(),
         body: Padding(
@@ -223,12 +238,14 @@ class ListPageState extends State<ListPage> {
                         selectedDayPredicate: (day) {
                           return isSameDay(_selectedDay, day);
                         },
-                        onDaySelected: (selectedDay, focusedDay) => selectDay(user.id, selectedDay, focusedDay),
+                        onDaySelected: (selectedDay, focusedDay) =>
+                            selectDay(user.id, selectedDay, focusedDay),
                         onPageChanged: setMonthFocusedDay,
                       )),
                   ...buildEntryList()
                 ])),
         floatingActionButton: FloatingActionButton(
+          key: addButtonKey,
           onPressed: () => openEntryModal(),
           child: const Icon(Icons.add),
         ));

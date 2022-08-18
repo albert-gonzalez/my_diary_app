@@ -5,19 +5,19 @@ import 'package:my_diary/entry/models/entry.dart';
 const entriesPrefix = 'entries';
 
 class EntryRepository {
-  final FlutterSecureStorage _storage;
+  final FlutterSecureStorage storage = FlutterSecureStorage();
 
-  String _storageKeyFromEntry(Entry entry) =>
-      _storageKey(userId: entry.userId, day: entry.day);
+  String storageKeyFromEntry(Entry entry) =>
+      storageKey(userId: entry.userId, day: entry.day);
   
-  String _storageKey({ required String userId, required DateTime day}) =>
+  String storageKey({ required String userId, required DateTime day}) =>
       "${entriesPrefix}_${userId}_${day.year}_${day.month}_${day.day}";
 
-  EntryRepository(this._storage);
+  EntryRepository();
 
   Future<List<Entry>> findByDay(String userId, DateTime day) async {
-    var rawEntries = await _storage.read(
-        key: _storageKey(userId: userId, day: day));
+    var rawEntries = await storage.read(
+        key: storageKey(userId: userId, day: day));
     return Entry.listFromJson(rawEntries != null ? jsonDecode(rawEntries) : []);
   }
 
@@ -26,7 +26,7 @@ class EntryRepository {
 
     entries.removeWhere((storedEntry) => storedEntry.id == entry.id);
 
-    _storage.write(key: _storageKeyFromEntry(entry), value: jsonEncode(entries));
+    storage.write(key: storageKeyFromEntry(entry), value: jsonEncode(entries));
   }
 
   Future<void> persist(Entry entry) async {
@@ -40,6 +40,6 @@ class EntryRepository {
       entries.add(entry);
     }
 
-    _storage.write(key: _storageKeyFromEntry(entry), value: jsonEncode(entries));
+    storage.write(key: storageKeyFromEntry(entry), value: jsonEncode(entries));
   }
 }

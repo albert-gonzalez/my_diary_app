@@ -33,7 +33,7 @@ class EntryPageState extends State<EntryPage> {
   final _dayController = TextEditingController();
   QuillController? _bodyController;
   final FocusNode _focusNode = FocusNode();
-  final _entryRepository = EntryRepository(const FlutterSecureStorage());
+  final _entryRepository = EntryRepository();
   final uuid = const Uuid();
   bool readOnly = false;
   String? _id;
