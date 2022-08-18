@@ -4,7 +4,6 @@ import 'package:my_diary/components/text_editor/text_editor_toolbar.dart';
 import 'package:my_diary/entry/models/entry.dart';
 import 'package:my_diary/entry/services/entry_repository.dart';
 import 'package:flutter_quill/flutter_quill.dart' hide Text;
-import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:intl/intl.dart';
 import 'package:my_diary/user/models/user.dart';
 import 'package:provider/provider.dart';
@@ -190,7 +189,7 @@ class EntryPageState extends State<EntryPage> {
                     readOnly: true,
                   ),
                   const SizedBox(height: 20),
-                  Text(S.of(context).title,
+                  Text(S.of(context).body,
                       style: TextStyle(fontSize: 14, color: getFocusColor())),
                   const SizedBox(height: 10),
                   readOnly

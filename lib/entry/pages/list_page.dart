@@ -1,6 +1,5 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
-import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:my_diary/components/calendar/calendar.dart';
 import 'package:my_diary/entry/pages/entry_page.dart';
 import 'package:my_diary/entry/services/entry_repository.dart';
