@@ -7,9 +7,14 @@ import 'package:flutter_quill/flutter_quill.dart' hide Text;
 import 'package:intl/intl.dart';
 import 'package:my_diary/user/models/user.dart';
 import 'package:provider/provider.dart';
-import 'package:uuid/uuid.dart';
 
 import '../../generated/l10n.dart';
+
+const saveEntryButtonKey = Key('saveButton');
+const editEntryButtonKey = Key('editButton');
+const titleFieldKey = Key('titleFieldKey');
+const bodyFieldKey = Key('bodyFieldKey');
+const dayFieldKey = Key('dayFieldKey');
 
 class EntryPage extends StatefulWidget {
   final Function? callback;
@@ -19,8 +24,7 @@ class EntryPage extends StatefulWidget {
   final EntryRepository? entryRepository;
 
   const EntryPage(
-      {Key? key, this.callback, this.entry, this.readOnly = false, this.day, this.entryRepository})
-      : super(key: key);
+      {super.key, this.callback, this.entry, this.readOnly = false, this.day, this.entryRepository});
 
   @override
   EntryPageState createState() => EntryPageState();
@@ -34,7 +38,6 @@ class EntryPageState extends State<EntryPage> {
   QuillController? _bodyController;
   final FocusNode _focusNode = FocusNode();
   late final _entryRepository = widget.entryRepository ?? EntryRepository();
-  final uuid = const Uuid();
   bool readOnly = false;
   String? _id;
   DateTime? _day;
@@ -47,7 +50,7 @@ class EntryPageState extends State<EntryPage> {
     }
     setState(() {
       _editorFocused = false;
-      _id = widget.entry?.id ?? uuid.v4();
+      _id = widget.entry?.id;
       _day = widget.entry?.day ?? widget.day;
       readOnly = widget.readOnly;
       _dayController.text = formatDay();
@@ -94,6 +97,7 @@ class EntryPageState extends State<EntryPage> {
     }
 
     TextEditor editor = TextEditor(
+      key: bodyFieldKey,
       controller: _bodyController!,
       readOnly: readOnly,
       focusNode: _focusNode,
@@ -115,7 +119,7 @@ class EntryPageState extends State<EntryPage> {
         return;
       }
 
-      var entry = Entry(_id!, _titleController.text,
+      var entry = Entry(_id, _titleController.text,
           _bodyController!.document.toDelta().toJson(), _day!, user.id);
       await _entryRepository.persist(entry);
 
@@ -152,8 +156,10 @@ class EntryPageState extends State<EntryPage> {
             actions: [
               readOnly
                   ? IconButton(
+                      key: editEntryButtonKey,
                       icon: const Icon(Icons.edit), onPressed: openEditEntry)
                   : IconButton(
+                      key: saveEntryButtonKey,
                       icon: const Icon(Icons.check), onPressed: saveEntry)
             ]),
         body: Form(
@@ -164,6 +170,7 @@ class EntryPageState extends State<EntryPage> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   TextFormField(
+                    key: titleFieldKey,
                     decoration: InputDecoration(
                       border: const UnderlineInputBorder(),
                       labelText: S.of(context).title,
@@ -181,6 +188,7 @@ class EntryPageState extends State<EntryPage> {
                   ),
                   const SizedBox(height: 20),
                   TextFormField(
+                    key: dayFieldKey,
                     decoration: InputDecoration(
                       border: const UnderlineInputBorder(),
                       labelText: S.of(context).date,

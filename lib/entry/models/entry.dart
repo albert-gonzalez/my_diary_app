@@ -1,11 +1,15 @@
+import 'package:uuid/uuid.dart';
+
 class Entry {
-  String id;
+  late final String id;
   String title;
   List body;
   DateTime day;
   String userId;
 
-  Entry(this.id, this.title, this.body, this.day, this.userId);
+  Entry(id, this.title, this.body, this.day, this.userId) {
+    this.id = id ?? const Uuid().v4();
+  }
 
   Entry.fromJson(Map<String, dynamic> json)
       : id = json['id'],
