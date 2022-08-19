@@ -4,12 +4,14 @@
 
 ## Screenshots
 
-<div style="text-align: center;">
-    <img src="./assets/screenshots/sign_in.png" alt="Sign In Page" width="200">
-    <img src="./assets/screenshots/list_empty.png" alt="Empty List Page" width="200">
-    <img src="./assets/screenshots/edit_entry.png" alt="New/Edit Entry Page" width="200">
-    <img src="./assets/screenshots/list.png" alt="Sign In Page" width="200">
-    <img src="./assets/screenshots/view_entry.png" alt="View Page" width="200">
+<div align="center">
+    <img src="./assets/screenshots/sign_in.png" alt="Sign In Page" width="240">
+    <img src="./assets/screenshots/list_empty.png" alt="Empty List Page" width="240">
+    <img src="./assets/screenshots/edit_entry.png" alt="New/Edit Entry Page" width="240">
+</div>
+<div align="center">
+    <img src="./assets/screenshots/list.png" alt="Sign In Page" width="240">
+    <img src="./assets/screenshots/view_entry.png" alt="View Page" width="240">
 </div>
 
 ## Main libs used
