@@ -24,7 +24,12 @@ class EntryPage extends StatefulWidget {
   final EntryRepository? entryRepository;
 
   const EntryPage(
-      {super.key, this.callback, this.entry, this.readOnly = false, this.day, this.entryRepository});
+      {super.key,
+      this.callback,
+      this.entry,
+      this.readOnly = false,
+      this.day,
+      this.entryRepository});
 
   @override
   EntryPageState createState() => EntryPageState();
@@ -157,10 +162,12 @@ class EntryPageState extends State<EntryPage> {
               readOnly
                   ? IconButton(
                       key: editEntryButtonKey,
-                      icon: const Icon(Icons.edit), onPressed: openEditEntry)
+                      icon: const Icon(Icons.edit),
+                      onPressed: openEditEntry)
                   : IconButton(
                       key: saveEntryButtonKey,
-                      icon: const Icon(Icons.check), onPressed: saveEntry)
+                      icon: const Icon(Icons.check),
+                      onPressed: saveEntry)
             ]),
         body: Form(
             key: _formKey,

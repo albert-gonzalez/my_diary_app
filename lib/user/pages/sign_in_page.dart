@@ -94,7 +94,10 @@ class SignInPageState extends State<SignInPage> {
         setState(() => isSigningIn = false);
       }
     } catch (e) {
-      setState(() {isErrorState = true; isSigningIn = false;});
+      setState(() {
+        isErrorState = true;
+        isSigningIn = false;
+      });
     }
   }
 
@@ -110,7 +113,10 @@ class SignInPageState extends State<SignInPage> {
         setState(() => isSigningIn = false);
       }
     } catch (e) {
-      setState(() {isErrorState = true; isSigningIn = false;});
+      setState(() {
+        isErrorState = true;
+        isSigningIn = false;
+      });
     }
   }
 

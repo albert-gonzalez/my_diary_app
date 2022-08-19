@@ -55,11 +55,12 @@ class ListPageState extends State<ListPage> {
     showDialog(
         context: context,
         builder: (context) => EntryPage(
-            callback: reloadWithChange,
-            entry: entry,
-            readOnly: readOnly,
-            day: _selectedDay,
-            entryRepository: widget.entryRepository,));
+              callback: reloadWithChange,
+              entry: entry,
+              readOnly: readOnly,
+              day: _selectedDay,
+              entryRepository: widget.entryRepository,
+            ));
   }
 
   void reloadWithChange(Entry entry) async {

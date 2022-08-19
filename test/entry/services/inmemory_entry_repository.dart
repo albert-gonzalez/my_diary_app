@@ -12,7 +12,8 @@ class InMemoryEntryRepository implements EntryRepository {
 
   @override
   Future<List<Entry>> findByDay(String userId, DateTime day) async {
-    var rawEntries = _storage[EntryRepository.storageKey(userId: userId, day: day)];
+    var rawEntries =
+        _storage[EntryRepository.storageKey(userId: userId, day: day)];
     return Entry.listFromJson(rawEntries != null ? jsonDecode(rawEntries) : []);
   }
 
