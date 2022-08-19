@@ -86,6 +86,7 @@ void main() {
           Stream.fromFuture(userSignedIn.future);
       when(signIn.signIn()).thenAnswer((realInvocation) => Future(() {
             userSignedIn.complete(Future.value(mockAccount));
+            return null;
           }));
 
       when(mockAccount.id).thenReturn('someId');

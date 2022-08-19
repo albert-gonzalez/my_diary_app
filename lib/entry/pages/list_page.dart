@@ -223,7 +223,7 @@ class ListPageState extends State<ListPage> {
                 icon: const Avatar());
           }),
         ),
-        drawer: ProfilePage(),
+        drawer: const ProfilePage(),
         body: Padding(
             padding: const EdgeInsets.all(10),
             child: Column(

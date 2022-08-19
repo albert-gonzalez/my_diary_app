@@ -35,7 +35,7 @@ void main() {
     final signIn = MockGoogleSignIn();
 
     when(signIn.onCurrentUserChanged)
-        .thenAnswer((realInvocation) => Stream.empty());
+        .thenAnswer((realInvocation) => const Stream.empty());
 
     final user = User(googleSignIn: signIn);
     final widget = ChangeNotifierProvider(
