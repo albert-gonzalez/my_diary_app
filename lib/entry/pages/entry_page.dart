@@ -70,7 +70,7 @@ class EntryPageState extends State<EntryPage> {
     });
   }
 
-  void showDatepicker() async {
+  void showDayDatePicker() async {
     if (readOnly) {
       return;
     }
@@ -90,6 +90,38 @@ class EntryPageState extends State<EntryPage> {
   }
 
   String formatDay() => DateFormat.yMMMd().format(_day!);
+
+  Color getFocusColor() => _editorFocused
+      ? Theme.of(context).primaryColor
+      : Theme.of(context).hintColor;
+
+  void saveEntry(User user) async {
+    if (!_formKey.currentState!.validate()) {
+      return;
+    }
+
+    var entry = Entry(_id, _titleController.text,
+        _bodyController!.document.toDelta().toJson(), _day!, user.id);
+    await _entryRepository.persist(entry);
+
+    if (widget.callback != null) {
+      widget.callback!(entry);
+    }
+
+    if (!mounted) {
+      return;
+    }
+
+    Navigator.pop(context);
+    var snackBar = SnackBar(
+      content: Text(S.of(context).entrySaved),
+      behavior: SnackBarBehavior.floating,
+      shape: const RoundedRectangleBorder(
+          borderRadius: BorderRadius.all(Radius.circular(5))),
+    );
+
+    ScaffoldMessenger.of(context).showSnackBar(snackBar);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -115,38 +147,6 @@ class EntryPageState extends State<EntryPage> {
       });
     });
 
-    Color getFocusColor() => _editorFocused
-        ? Theme.of(context).primaryColor
-        : Theme.of(context).hintColor;
-
-    void saveEntry() async {
-      if (!_formKey.currentState!.validate()) {
-        return;
-      }
-
-      var entry = Entry(_id, _titleController.text,
-          _bodyController!.document.toDelta().toJson(), _day!, user.id);
-      await _entryRepository.persist(entry);
-
-      if (widget.callback != null) {
-        widget.callback!(entry);
-      }
-
-      if (!mounted) {
-        return;
-      }
-
-      Navigator.pop(context);
-      var snackBar = SnackBar(
-        content: Text(S.of(context).entrySaved),
-        behavior: SnackBarBehavior.floating,
-        shape: const RoundedRectangleBorder(
-            borderRadius: BorderRadius.all(Radius.circular(5))),
-      );
-
-      ScaffoldMessenger.of(context).showSnackBar(snackBar);
-    }
-
     void openEditEntry() {
       setState(() {
         readOnly = false;
@@ -167,7 +167,7 @@ class EntryPageState extends State<EntryPage> {
                   : IconButton(
                       key: saveEntryButtonKey,
                       icon: const Icon(Icons.check),
-                      onPressed: saveEntry)
+                      onPressed: () => saveEntry(user))
             ]),
         body: Form(
             key: _formKey,
@@ -200,7 +200,7 @@ class EntryPageState extends State<EntryPage> {
                       border: const UnderlineInputBorder(),
                       labelText: S.of(context).date,
                     ),
-                    onTap: showDatepicker,
+                    onTap: showDayDatePicker,
                     controller: _dayController,
                     readOnly: true,
                   ),

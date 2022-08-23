@@ -10,7 +10,7 @@ const anonymousSignInButtonKey = Key('anonymous');
 const errorKey = Key('error');
 
 class SignInPage extends StatefulWidget {
-  const SignInPage({Key? key}) : super(key: key);
+  const SignInPage({super.key});
 
   @override
   State createState() => SignInPageState();

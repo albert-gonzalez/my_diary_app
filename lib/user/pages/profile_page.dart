@@ -9,7 +9,7 @@ const logoutButtonKey = Key('logoutButton');
 class ProfilePage extends StatelessWidget {
   final Avatar? avatar;
 
-  const ProfilePage({Key? key, this.avatar}) : super(key: key);
+  const ProfilePage({super.key, this.avatar});
 
   logout(User user, BuildContext context) {
     Scaffold.of(context).closeDrawer();

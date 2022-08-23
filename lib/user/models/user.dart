@@ -8,7 +8,6 @@ class User with ChangeNotifier {
   String displayName = '';
 
   GoogleSignIn _googleSignIn = GoogleSignIn(
-    // Optional clientId
     scopes: <String>[
       'email',
     ],

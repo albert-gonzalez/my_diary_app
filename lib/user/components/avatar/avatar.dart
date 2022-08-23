@@ -6,7 +6,7 @@ import 'package:provider/provider.dart';
 class Avatar extends StatelessWidget {
   final Widget? googleAvatarWidget;
 
-  const Avatar({Key? key, this.googleAvatarWidget}) : super(key: key);
+  const Avatar({super.key, this.googleAvatarWidget});
 
   @override
   Widget build(BuildContext context) {

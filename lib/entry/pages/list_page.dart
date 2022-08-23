@@ -12,7 +12,7 @@ import 'package:table_calendar/table_calendar.dart';
 import '../../generated/l10n.dart';
 import '../models/entry.dart';
 
-const emptyDayTextKey = Key('emptyDatyText');
+const emptyDayTextKey = Key('emptyDateText');
 const removeButtonKey = Key('removeButton');
 const undoButtonKey = Key('undoButton');
 const editButtonKey = Key('editButton');

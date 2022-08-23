@@ -17,15 +17,15 @@ class Calendar extends TableCalendar {
       );
 
   Calendar(
-      {Key? key,
+      {
       required super.focusedDay,
+      super.key,
       super.selectedDayPredicate,
       super.onDaySelected,
       super.onPageChanged,
       super.headerStyle,
       super.calendarStyle})
       : super(
-          key: key,
           firstDay: _defaultFirstDay,
           lastDay: _defaultLastDay,
         );

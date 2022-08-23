@@ -7,6 +7,8 @@ const entriesBox = 'entries';
 class EntryRepository {
   final Box _box = Hive.box(entriesBox);
 
+  static Future<void> init() => Hive.openBox(entriesBox);
+
   static String storageKeyFromEntry(Entry entry) =>
       storageKey(userId: entry.userId, day: entry.day);
 
