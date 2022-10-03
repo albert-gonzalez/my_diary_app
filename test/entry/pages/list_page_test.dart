@@ -17,6 +17,7 @@ const _key = Key('page');
 
 void main() {
   createWidget(WidgetTester tester, {EntryRepository? repository}) async {
+    tester.binding.window.physicalSizeTestValue = const Size(1080, 1920);
     if (repository == null) {
       repository = InMemoryEntryRepository();
       await repository.persist(Entry(

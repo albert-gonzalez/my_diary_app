@@ -6,8 +6,6 @@ class TextEditorToolbar {
       showAlignmentButtons: true,
       showFontFamily: false,
       showFontSize: false,
-      showImageButton: false,
-      showVideoButton: false,
       showColorButton: false,
       showBackgroundColorButton: false,
       showSearchButton: false,

@@ -22,8 +22,6 @@ class _MockedGoogleIdentity implements GoogleIdentity {
 }
 
 void main() {
-  final user = User();
-
   createWidget({Function? userAction}) => MaterialApp(
         localizationsDelegates: const [
           S.delegate,
